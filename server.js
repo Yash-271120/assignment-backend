@@ -5,6 +5,7 @@ const dotenv = require('dotenv');
 
 //import routes
 const authRoute = require('./routes/auth');
+const itemRoute = require('./routes/item');
 
 //create express app
 const app = express();
@@ -25,6 +26,7 @@ app.get('/', (req, res) => {
     res.send('Hello World');
 });
 app.use('/api/user', authRoute);
+app.use('/api/items', itemRoute);
 
 //server listening
 app.listen(process.env.PORT, () => {
