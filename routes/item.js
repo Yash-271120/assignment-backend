@@ -1,4 +1,7 @@
+// Description: This file contains all the routes for the items
 const router = require('express').Router();
+
+//import models
 const Item = require('../models/Item');
 
 
