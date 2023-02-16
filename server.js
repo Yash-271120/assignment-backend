@@ -3,6 +3,9 @@ const express = require('express');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 
+//import routes
+const authRoute = require('./routes/auth');
+
 //create express app
 const app = express();
 dotenv.config();
@@ -21,6 +24,7 @@ mongoose.connect(process.env.DB_URI, { useNewUrlParser: true, useUnifiedTopology
 app.get('/', (req, res) => {
     res.send('Hello World');
 });
+app.use('/api/user', authRoute);
 
 //server listening
 app.listen(process.env.PORT, () => {
