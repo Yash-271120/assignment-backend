@@ -22,23 +22,34 @@ router.post('/create',verify, async (req, res) => {
     const discount = await DiscountCode.findOne({ code: discountCode });
     const user = await User.findById(req.user._id);
 
+    
+
+    // check if cart exists
+    if(!cart){
+        return res.status(400).json({ error: 'Cart not found' });
+    }
+
+    // check for unauthorized access
+    if(cart.user.toString() !== req.user._id.toString()){
+        return res.status(400).json({ error: 'Unauthorized access' });
+    }
+
     // check for validity of discount
-    if(!discount){
+    if(discountCode && !discount){
         return res.status(400).json({ error: 'Invalid discount code' });
     }
     
-    if(discount.used){
+    if(discountCode && discount.used){
         return res.status(400).json({ error: 'discount code has already been used' });
     }
 
-    if(orders.length%N !== 0){
+    if(discountCode && orders.length%N !== 0){
         return res.status(400).json({ error: 'discount code cannot be applied now' });
     }
 
 
     // calculate discounted price
-    const discountedPrice = cart.totalPrice - (cart.totalPrice*(discount.discountGiven/100));
-
+    const discountedPrice = discountCode ? cart.totalPrice - (cart.totalPrice*(discount.discountGiven/100)) : cart.totalPrice;
     const newOrder = new Order({
         userId: req.user._id,
         items: cart.items,
@@ -49,11 +60,13 @@ router.post('/create',verify, async (req, res) => {
 
     try {
         const savedOrder = await newOrder.save();
-        discount.used = true;
-        await discount.save();
         await Cart.findByIdAndDelete(cartId);
         user.orders.push(savedOrder._id);
         await user.save();
+        if(discountCode){
+            discount.used = true;
+            await discount.save();
+        }
         res.json(savedOrder);
     } catch (err) {
         res.status(400).json({ error: err });
