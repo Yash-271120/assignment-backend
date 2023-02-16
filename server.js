@@ -6,6 +6,7 @@ const dotenv = require('dotenv');
 //import routes
 const authRoute = require('./routes/auth');
 const itemRoute = require('./routes/item');
+const cartRoute = require('./routes/cart');
 
 //create express app
 const app = express();
@@ -27,6 +28,7 @@ app.get('/', (req, res) => {
 });
 app.use('/api/user', authRoute);
 app.use('/api/items', itemRoute);
+app.use('/api/cart', cartRoute);
 
 //server listening
 app.listen(process.env.PORT, () => {
