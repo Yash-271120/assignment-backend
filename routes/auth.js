@@ -1,8 +1,10 @@
-const User = require('../models/User');
+//import modules
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
-const mongoose = require('mongoose');
 const router = require('express').Router();
+
+//import models
+const User = require('../models/User');
 
 
 // @route POST api/auth/register
