@@ -44,7 +44,7 @@ router.post('/register', async (req, res) => {
 // @desc Login a user
 // @access Public
 router.post('/login', async (req, res) => {
-    const { email, password, admin } = req.body;
+    const { email, password } = req.body;
 
     // Check if User exists
     const user = await User.findOne({ email: email });
@@ -59,7 +59,7 @@ router.post('/login', async (req, res) => {
     }
 
     // Create and assign a token
-    const token = jwt.sign({ _id: user._id, admin }, process.env.SECRET);
+    const token = jwt.sign({ _id: user._id, admin: user.admin }, process.env.SECRET);
     res.header('auth-token', token).json({ token });
 });
 
