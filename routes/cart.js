@@ -16,8 +16,9 @@ router.post('/', verify, async (req, res) => {
     const { itemId } = req.body;
     const userId = req.user._id;
     const item = await Item.findById(itemId);
-    const cart = await Cart.findOne({ userId: userId });
+    const cart = await Cart.findOne({ user: userId });
 
+    
     // Check if item exists
     if(!item){
         return res.status(400).json({ error: 'Item not found' });
@@ -35,7 +36,7 @@ router.post('/', verify, async (req, res) => {
             }
     }else{
         const newCart = new Cart({
-            userId,
+            user:userId,
             items: [item._id],
             totalPrice: item.price,
         });
