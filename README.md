@@ -79,6 +79,7 @@ Body -
 ```
 {
    "cartId":"cartId"
+   "discountCode":"discountCode"(optional - discountCode generated from admin api)
 }
 ```
 
