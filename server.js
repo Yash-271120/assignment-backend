@@ -24,9 +24,8 @@ mongoose.connect(process.env.DB_URI, { useNewUrlParser: true, useUnifiedTopology
 
 
 //import routes
-//TODO: remove this test route
 app.get('/', (req, res) => {
-    res.send('Hello World');
+    res.send('Welcome to the server');
 });
 app.use('/api/user', authRoute);
 app.use('/api/items', itemRoute);
